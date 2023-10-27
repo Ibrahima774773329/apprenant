@@ -1,49 +1,57 @@
 <?php
 
+
 namespace App\Http\Controllers;
+
 
 use App\Models\Cours;
 use Illuminate\Http\Request;
 
+
 class CoursController extends Controller
 {
+
     /**
-     * Affiche la liste des cours
+     * Affiche la liste des contacts
      */
     public function index()
     {
+
         $cours = Cours::all();
         return view('cours.index', compact('cours'));
+
     }
 
+
     /**
-     * Retourne le formulaire de création d'un cours
+     * return le formulaire de créationcreation d'un contact
      */
     public function create()
     {
+
         return view('cours.create');
+
     }
 
+
     /**
-     * Enregistre un nouveau cours dans la base de données
-     */
-    public function store(Request $request)
+     * Enregistre un nouveau contact dans la base de données
+     */ public function store(Request $request)
     {
-        $imagePath=(request("image")->store('uploads','public') );
         $request->validate([
             'titre' => 'required',
             'contenu' => 'required',
             'image' => 'required',
             'duree' => 'required',
         ]);
-        $cours = new Cours([
+        $cours = new cours([
             'titre' => $request->get('titre'),
             'contenu' => $request->get('contenu'),
-            'image' =>$imagePath, 
+            'image' =>$request->get('image'), 
             'duree' => $request->get('duree'),
         ]);
         $cours->save();
-        return redirect('/')->with('success', 'Cours ajouté avec succès');
+        return redirect('/')->with('success', 'cours ajouté avec succès');
     }
 
     /**
@@ -51,7 +59,7 @@ class CoursController extends Controller
      */
     public function show($id)
     {
-        $cours = Cours::findOrFail($id);
+        $cours = cours::findOrFail($id);
         return view('cours.show', compact('cours'));
     }
 
@@ -60,7 +68,7 @@ class CoursController extends Controller
      */
     public function edit($id)
     {
-        $cours = Cours::findOrFail($id);
+        $cours = cours::findOrFail($id);
         return view('cours.edit', compact('cours'));
     }
 
@@ -75,25 +83,36 @@ class CoursController extends Controller
             'image' => 'required',
             'duree' => 'required',
         ]);
-
-        $cours = Cours::findOrFail($id);
-        $cours->titre = $request->get('titre');
-        $cours->contenu = $request->get('contenu');
-        $cours->image = $request->get('image');
-        $cours->duree = $request->get('duree');
-
+    
+        $cours= Cours::find($id);
+    
+        if (!$cours) {
+            return redirect('/')->with('error', 'Cours non trouvé');
+        }
+    
+        // Mettre à jour les champs de l'étudiant avec les données de la requête
+        $cours->titre= $request->input('titre');
+        $cours->contenu = $request->input('contenu');
+        $cours->image = $request->input('image');
+        $cours->duree = $request->input('duree');
+    
+        // Enregistrer les modifications
         $cours->update();
+    
         return redirect('/')->with('success', 'Cours modifié avec succès');
     }
-
-    /**
+      /**
      * Supprime le cours de la base de données
      */
     public function destroy($id)
     {
-        $cours = Cours::findOrFail($id);
+        $cours = cours::findOrFail($id);
         $cours->delete();
-        return redirect('/')->with('success', 'Cours supprimé avec succès');
+        return redirect('/')->with('success', 'courssupprimé avec succès');
     }
 
 }
+
+
+
+   

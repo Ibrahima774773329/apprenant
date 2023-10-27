@@ -7,7 +7,7 @@
 
         <div class="col-lg-11">
 
-            <h2>Gestion apprenant</h2>
+            <h2>Gestion COURS</h2>
 
         </div>
 
@@ -45,7 +45,7 @@
         @foreach ($cours as $index => $cours)
 
             <tr>
-                <td>{{ $index }}</td>
+            <td>{{ $cours->id }}</td>
                 <td>{{ $cours->titre }}</td>
                 <td>{{ $cours->contenu }}</td>
                 <td>{{ $cours->image }}</td>

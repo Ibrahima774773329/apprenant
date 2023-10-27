@@ -4,7 +4,7 @@
 
 @section('content')
 
-<h1>Gestion apprenant</h1>
+<h1>Gestion COURS</h1>
 
 
     <table class="table table-bordered">
